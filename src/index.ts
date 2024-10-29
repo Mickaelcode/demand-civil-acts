@@ -1,27 +1,16 @@
-import express, {Request,Response} from 'express'
+import express , {Request,Response} from 'express'
 import { PrismaClient } from '@prisma/client'
+import routes from './routes'
+import cors from "cors"
 
 const app = express() 
 const prisma = new PrismaClient()
 const PORT = process.env.PORT || 3000
 
+app.use(cors())
 app.use(express.json())
-app.get('/',(req:Request,res:Response) =>{
-    res.json('hello world')
-})
-
-app.post('/user', async (req :Request ,res :Response) =>{
-    const {email,name,first_name,password } = req.body
-    const user = await prisma.user.create({
-        data :{email,name,first_name,password}
-    })
-    res.json(user)
-})
-
-app.get('/users',async (req:Request ,res:Response) =>{
-    const users = await prisma.user.findMany()
-    res.json(users)
-})
+app.use('/api',routes)
 
 
+export default prisma
 app.listen(PORT,() => console.log(`running on port ${PORT}`))

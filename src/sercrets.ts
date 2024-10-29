@@ -1,0 +1,1 @@
+export const PRIVATE_KEY = "jddifil457djhruui6799"
