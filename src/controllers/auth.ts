@@ -4,6 +4,15 @@ import { compareSync, hashSync } from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import { PRIVATE_KEY } from "../sercrets"
 
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ * the root /sign-up  is used by user or citizens * 
+
+ * 
+ */
 export const sign_up = async (req: Request, res: Response) => {
     const { email, name, first_name, password } = req.body
     let msg = ""
@@ -34,6 +43,16 @@ export const sign_up = async (req: Request, res: Response) => {
     }
 
 }
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @returns 
+ * the root /login is used too by user
+ * in this root  we give a token that have : email and role(user) that expired on 24h
+ * 
+ */
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
