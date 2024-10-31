@@ -6,6 +6,7 @@ import { PRIVATE_KEY } from '../sercrets'
 export const security_admin = (req: Request, res: Response, next: NextFunction) => {
     const authorizations = req.headers.authorizations
     let msg = ""
+    
     if (!authorizations) {
         msg = "authorization required"
         res.status(301).json({ msg })
@@ -23,6 +24,12 @@ export const security_admin = (req: Request, res: Response, next: NextFunction) 
 
             const role = decodeToken.role
             if (role !== 'admin') {
+                if (req.originalUrl ==='/api/user/update'){
+                    next()  
+                    return
+                }
+
+
                 msg = "you are not an admin"
 
                 res.status(301).json({msg})

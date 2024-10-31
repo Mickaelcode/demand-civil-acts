@@ -30,7 +30,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const { email, name, first_name, password } = req.body
     let msg: string
     try {
-        let user = await prisma.user.findFirst({ where: email })
+        let user = await prisma.user.findFirst({ where: {email} })
         if (!user) {
             msg = "user not found"
             res.status(404).json({ msg })
@@ -58,7 +58,7 @@ export const deleteUser = async (req:Request ,res:Response) =>{
     const {email} = req.body 
     let msg:string
     try{
-        let user = await prisma.user.findFirst({ where: email })
+        let user = await prisma.user.findFirst({ where: {email} })
         if (!user) {
             msg = "user not found"
             res.status(404).json({ msg })

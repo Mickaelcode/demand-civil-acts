@@ -15,7 +15,7 @@ routes.use('/admin',admin_root)
 
 
 /**
- * root for admin authorizations
+ * root for admin authorizations (excepted update)
  * CRUD for all the table
  * 
  */

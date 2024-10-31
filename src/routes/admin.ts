@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAdmin } from "../controllers/admin";
+import { createAdmin } from "../controllers/create-admin";
 import { login_admin } from "../controllers/auth";
 import { security_admin } from "../middlewares/security_admin";
 
