@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express"
 import jwt from "../controllers/auth"
 import { PRIVATE_KEY } from "../sercrets"
+
+
+
+
 export const security_auth = (req: Request, res: Response, next: NextFunction) => {
     const authorizations = req.headers.authorizations
     let msg=""

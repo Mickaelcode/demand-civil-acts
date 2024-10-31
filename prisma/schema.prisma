@@ -14,11 +14,11 @@ datasource db {
 }
 
 model User {
-  email       String   @id @unique // Utilisation de @id pour faire de l'email la clé primaire
-  name        String
-  first_name  String
-  password    String 
-  demands     Demand[] // Relation inverse pour accéder aux demandes de l'utilisateur
+  email      String   @id @unique // Utilisation de @id pour faire de l'email la clé primaire
+  name       String
+  first_name String
+  password   String
+  demands    Demand[] // Relation inverse pour accéder aux demandes de l'utilisateur
 }
 
 enum Act {
@@ -28,8 +28,19 @@ enum Act {
 }
 
 model Demand {
-  id         Int   @id @default(autoincrement())
-  act_demand Act
-  email_user String
-  user       User  @relation(fields: [email_user], references: [email])
+  id          Int    @id @default(autoincrement())
+  act_demand  Act
+  email_user  String
+  email_admin String
+
+  user  User          @relation(fields: [email_user], references: [email])
+  admin Administrator @relation(fields: [email_admin], references: [email_admin])
+}
+
+model Administrator {
+  email_admin      String   @unique
+  name_admin       String
+  first_name_admin String
+  password_admin   String
+  demands          Demand[]
 }
