@@ -64,7 +64,7 @@ export const deleteUser = async (req:Request ,res:Response) =>{
             res.status(404).json({ msg })
             return
         }
-        user = await prisma.user.delete({where:email})
+        user = await prisma.user.delete({where:{email}})
         msg = "user deleted success"
         res.status(200).json({msg,user})
         return
