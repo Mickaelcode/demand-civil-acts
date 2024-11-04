@@ -27,14 +27,33 @@ enum Act {
   WEDDING
 }
 
-model Demand {
-  id          Int    @id @default(autoincrement())
-  act_demand  Act
-  email_user  String
-  email_admin String
+enum Status {
+  EN_ATTENTE
+  REFUSE
+  ACCEPTE
+}
 
-  user  User          @relation(fields: [email_user], references: [email])
-  admin Administrator @relation(fields: [email_admin], references: [email_admin])
+model Demand {
+  id         Int    @id @default(autoincrement())
+  actDemand  Act
+  emailAdmin String
+  emailUser  String
+  numACte String
+
+  province     Province
+  commune      String
+  name         String
+  firstName    String
+  dateOfBirth  DateTime
+  placeOfBirth String
+  attachment   String
+  createdAt    DateTime @default(now())
+
+  status Status @default(EN_ATTENTE)
+
+  user  User          @relation(fields: [emailUser], references: [email])
+  admin Administrator @relation(fields: [emailAdmin], references: [email_admin])
+  acte Acte @relation(fields: [numACte],references: [numAct])
 }
 
 model Administrator {
@@ -43,4 +62,29 @@ model Administrator {
   first_name_admin String
   password_admin   String
   demands          Demand[]
+}
+
+enum Province {
+  ANTANANARIVO
+  FIANARANTSOA
+  TOAMASINA
+  MAHAJANGA
+  ANTSIRANANA
+  TOLIARA
+}
+
+model Acte {
+  numAct       String   @id @unique
+  typeActe     Act
+  province     Province
+  nameCommune  String
+  nameCit      String
+  firstNameCit String
+  dateOB       DateTime
+  placeOB      String
+  delivrance   DateTime
+  father       String
+  mother       String
+  fileActe     String
+  demands Demand []
 }
