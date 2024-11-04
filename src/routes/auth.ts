@@ -4,7 +4,7 @@ import { security_auth } from "../middlewares/security";
 
 const auth_routes:Router = Router()
 
-auth_routes.post('/singUp',sign_up)
+auth_routes.post('/signUp',sign_up)
 auth_routes.post('/login',login)
 
 
