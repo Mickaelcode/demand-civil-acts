@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { login, sign_up } from "../controllers/auth";
-import { security_auth } from "../middlewares/security";
 
 const auth_routes:Router = Router()
 
