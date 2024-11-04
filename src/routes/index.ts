@@ -2,6 +2,7 @@ import { Router } from "express";
 import auth_routes from "./auth";
 import admin_root from "./admin";
 import userRoute from "./user";
+import demandRoute from "./demands";
 
 const routes = Router()
 
@@ -12,6 +13,7 @@ const routes = Router()
  */
 routes.use('',auth_routes)
 routes.use('/admin',admin_root)
+routes.use('/demands',demandRoute)
 
 
 /**
