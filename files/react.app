@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ActForm = () => {
+const DemandForm = () => {
     const [formData, setFormData] = useState({
+        actDemand: '',
+        emailAdmin: '',
+        emailUser: '',
         numAct: '',
-        typeActe: '',
         province: '',
-        nameCit: '',
-        firstNameCit: '',
-        dateOB: '',
-        placeOB: '',
-        delivrance: '',
-        father: '',
-        mother: '',
+        commune: '',
+        name: '',
+        firstName: '',
+        dateOfBirth: '',
+        placeOfBirth: '',
     });
 
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
     const [message, setMessage] = useState('');
 
     const handleChange = (e) => {
@@ -27,59 +27,61 @@ const ActForm = () => {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        setFiles(Array.from(e.target.files)); // Prend tous les fichiers
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData();
+        data.append('actDemand', formData.actDemand);
+        data.append('emailAdmin', formData.emailAdmin);
+        data.append('emailUser', formData.emailUser);
         data.append('numAct', formData.numAct);
-        data.append('typeActe', formData.typeActe);
         data.append('province', formData.province);
-        data.append('nameCit', formData.nameCit);
-        data.append('firstNameCit', formData.firstNameCit);
-        data.append('dateOB', formData.dateOB);
-        data.append('placeOB', formData.placeOB);
-        data.append('delivrance', formData.delivrance);
-        data.append('father', formData.father);
-        data.append('mother', formData.mother);
-        if (file) {
-            data.append('files', file); // Changez 'files' en fonction de votre middleware multer
-        }
+        data.append('commune', formData.commune);
+        data.append('name', formData.name);
+        data.append('firstName', formData.firstName);
+        data.append('dateOfBirth', formData.dateOfBirth);
+        data.append('placeOfBirth', formData.placeOfBirth);
+        
+        // Ajoute les fichiers à FormData
+        files.forEach(file => {
+            data.append('files', file); // Assurez-vous que 'files' correspond à ce que votre middleware multer attend
+        });
 
         try {
-            const response = await axios.post('http://localhost:3005/createAct', data, {
+            const response = await axios.post('http://localhost:3005/create', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage(response.data.message);
+            setMessage(response.data.msg);
         } catch (error) {
-            setMessage('Erreur lors de la création de l\'acte');
+            setMessage('Erreur lors de la création de la demande');
             console.error(error);
         }
     };
 
     return (
         <div>
-            <h1>Créer un Acte</h1>
+            <h1>Créer une Demande</h1>
             <form onSubmit={handleSubmit}>
+                <input type="text" name="actDemand" placeholder="Acte de Demande" value={formData.actDemand} onChange={handleChange} required />
+                <input type="email" name="emailAdmin" placeholder="Email de l'Administrateur" value={formData.emailAdmin} onChange={handleChange} required />
+                <input type="email" name="emailUser" placeholder="Email de l'Utilisateur" value={formData.emailUser} onChange={handleChange} required />
                 <input type="text" name="numAct" placeholder="Numéro d'Acte" value={formData.numAct} onChange={handleChange} required />
-                <input type="text" name="typeActe" placeholder="Type d'Acte" value={formData.typeActe} onChange={handleChange} required />
                 <input type="text" name="province" placeholder="Province" value={formData.province} onChange={handleChange} required />
-                <input type="text" name="nameCit" placeholder="Nom du Citoyen" value={formData.nameCit} onChange={handleChange} required />
-                <input type="text" name="firstNameCit" placeholder="Prénom du Citoyen" value={formData.firstNameCit} onChange={handleChange} required />
-                <input type="date" name="dateOB" value={formData.dateOB} onChange={handleChange} required />
-                <input type="text" name="placeOB" placeholder="Lieu de Naissance" value={formData.placeOB} onChange={handleChange} required />
-                <input type="text" name="delivrance" placeholder="Délivrance" value={formData.delivrance} onChange={handleChange} required />
-                <input type="text" name="father" placeholder="Nom du Père" value={formData.father} onChange={handleChange} required />
-                <input type="text" name="mother" placeholder="Nom de la Mère" value={formData.mother} onChange={handleChange} required />
-                <input type="file" onChange={handleFileChange} required />
-                <button type="submit">Créer l'Acte</button>
+                <input type="text" name="commune" placeholder="Commune" value={formData.commune} onChange={handleChange} required />
+                <input type="text" name="name" placeholder="Nom" value={formData.name} onChange={handleChange} required />
+                <input type="text" name="firstName" placeholder="Prénom" value={formData.firstName} onChange={handleChange} required />
+                <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} required />
+                <input type="text" name="placeOfBirth" placeholder="Lieu de Naissance" value={formData.placeOfBirth} onChange={handleChange} required />
+                <input type="file" onChange={handleFileChange} multiple required />
+                <button type="submit">Créer la Demande</button>
             </form>
             {message && <p>{message}</p>}
         </div>
     );
 };
 
-export default ActForm;
+export default DemandForm;
