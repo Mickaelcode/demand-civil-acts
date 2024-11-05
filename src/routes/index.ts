@@ -2,6 +2,7 @@ import { Router } from "express";
 import auth_routes from "./auth";
 import admin_root from "./admin";
 import userRoute from "./user";
+import acteRoute from "./acte";
 
 const routes = Router()
 
@@ -22,4 +23,6 @@ routes.use('/admin',admin_root)
 
 
 routes.use('/user',userRoute)
+routes.use('/act',acteRoute)
+
 export default routes
