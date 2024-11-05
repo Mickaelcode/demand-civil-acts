@@ -3,7 +3,6 @@ import prisma from "..";
 import { hashSync } from "bcrypt";
 
 
-
 export const createAdmin = async (req: Request, res: Response) => {
     const { email, name, first_name, password } = req.body
     let msg = ""
