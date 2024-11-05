@@ -1,5 +1,6 @@
 import { Request,Response } from "express";
 import prisma from "..";
+import fs from 'fs'
  
 export const createAct = async (req:Request ,res:Response) =>{
     const files = req.files as Express.Multer.File[]
@@ -18,6 +19,11 @@ export const createAct = async (req:Request ,res:Response) =>{
         res.status(200).json({msg,acte})
         return
     }catch(err){
+        files.forEach(file =>{
+            fs.unlink(file.path,(err)=>{
+                console.log(err);
+            })
+        })
         const msg = "have error !"
         res.status(500).json({msg,err})
         return
