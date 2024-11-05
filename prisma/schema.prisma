@@ -36,7 +36,7 @@ enum Status {
 model Demand {
   id         Int    @id @default(autoincrement())
   actDemand  Act
-  emailAdmin String
+  emailAdmin String @default("mika@gmail.com")
   emailUser  String
   numACte String
 

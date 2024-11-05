@@ -1,7 +1,8 @@
-import express from 'express'
+import express,{Request,Response} from 'express'
 import { PrismaClient } from '@prisma/client'
 import routes from './routes'
 import cors from "cors"
+
 
 
 
