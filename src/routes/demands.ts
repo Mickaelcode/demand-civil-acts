@@ -4,7 +4,7 @@ import multer from "../middlewares/uploadFile";
 import auth_routes from "./auth";
 
 const demandRoute = Router()
-demandRoute.post('/create', auth_routes ,multer,createDemand)
+demandRoute.post('/create' ,multer,createDemand)
 
 
 export default demandRoute

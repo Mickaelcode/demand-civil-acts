@@ -1,31 +1,15 @@
 import { Request, Response } from "express";
 import prisma from "..";
 
-/***
- * here is define the function crud of demands table
- */
-
 export const createDemand = async (req: Request, res: Response) => {
-    console.log(req.files);
-    const { actDemand,
-        emailAdmin,
-        emailUser,
-        numACte,
-        province,
-        commune,
-        name,
-        firstName,
-        dateOfBirth,
-        placeOfBirth,
-        } = req.body
-    let file  = req.files as Express.Multer.File[]
-    let msg = ""
+    const { actDemand, emailAdmin, emailUser, numACte, province, commune, name, firstName, dateOfBirth, placeOfBirth } = req.body;
+    const file = req.files as Express.Multer.File[];
+    let msg = "";
     try {
+        if (file && file.length) {
+            const attachment = file.length > 1 ? file.map(fi => fi.path).join('-') : file[0].path;
 
-        if (file){
-            const attachment:string = file.length >1 ? file.map(fi => fi.path).join('-') :  file[0].path
-            
-            let demand = await prisma.demand.create({
+            const demand = await prisma.demand.create({
                 data: {
                     actDemand,
                     emailAdmin,
@@ -38,19 +22,19 @@ export const createDemand = async (req: Request, res: Response) => {
                     dateOfBirth,
                     placeOfBirth,
                     attachment,
-
-                }
-            })
-            msg = "sucess!"
-            res.status(200).json({msg,demand})
-            return
+                },
+            });
+            msg = "success!";
+            res.status(200).json({ msg, demand });
+            return 
+        } else {
+            msg = "attachment required!";
+            res.status(400).json({ msg });
+            return 
         }
-        
-        msg = "attachment required!"
-        res.status(401).json({msg})
-        return
     } catch (err) {
-        res.status(501).json(err)
-        return
+        console.error("Error creating demand:", err);
+        res.status(500).json({ error: "Internal server error", details: err });
+        return 
     }
-}
+};

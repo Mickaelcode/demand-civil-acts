@@ -36,7 +36,7 @@ enum Status {
 model Demand {
   id         Int    @id @default(autoincrement())
   actDemand  Act
-  emailAdmin String?
+  emailAdmin String
   emailUser  String
   numACte String
 
@@ -52,8 +52,8 @@ model Demand {
   status Status @default(EN_ATTENTE)
 
   user  User          @relation(fields: [emailUser], references: [email])
-  admin Administrator? @relation(fields: [emailAdmin], references: [email_admin])
-  acte Acte @relation(fields: [numACte],references: [numAct])
+  admin Administrator @relation(fields: [emailAdmin], references: [email_admin])
+  // acte Acte @relation(fields: [numACte],references: [numAct])
 }
 
 model Administrator {
@@ -86,5 +86,5 @@ model Acte {
   father       String
   mother       String
   fileActe     String
-  demands Demand []
+  // demands Demand []
 }
