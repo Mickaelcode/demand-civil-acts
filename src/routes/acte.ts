@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAct } from "../controllers/acte";
+import { createAct, readAct } from "../controllers/acte";
 import { upload } from "../middlewares/upload";
 import { security_auth } from "../middlewares/security";
 // import upload from "../middlewares/upload";
@@ -11,6 +11,6 @@ const acteRoute = Router()
  */
 
 acteRoute.post('/create',security_auth,upload.array('files'),createAct)
-
+acteRoute.get('/lists',readAct)
 
 export default acteRoute

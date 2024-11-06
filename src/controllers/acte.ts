@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "..";
+import prisma, { PORT } from "..";
 import fs from 'fs'
 
 export const createAct = async (req: Request, res: Response) => {
@@ -30,17 +30,25 @@ export const createAct = async (req: Request, res: Response) => {
     }
 }
 
-export const readAct = async (req:Response,res:Response) =>{
-    try{
+export const readAct = async (req: Request, res: Response) => {
+    try {
         let msg = ""
         const act = await prisma.acte.findMany()
-        if (!act){
-            msg="Empty!"
-            res.status(200).json({msg})
+        if (!act || act.length === 0) {
+            msg = "Empty!"
+            res.status(200).json({ msg })
             return
         }
-        
-    }catch(err){
+        let data = act.map(a => ({ ...a, fileActe: process.env.API_URL!+ PORT +'/image/'+a.fileActe.replace('files/','') }))
 
+        msg = "here list of act"
+
+        res.status(200).json({ msg, data })
+        return
+
+
+    } catch (err) {
+        res.status(500).json({ err })
+        return
     }
 } 
