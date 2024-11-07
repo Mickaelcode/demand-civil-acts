@@ -11,7 +11,7 @@ admin_root.post('/login', login_admin)
  * all handle crud admin
  * use security_admin to secure root that only admin use
  * 
- * 
+ *  
  */
 admin_root.post('/create',security_admin,createAdmin)
 admin_root.put('/update',security_admin,updateAdmin)

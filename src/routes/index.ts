@@ -4,6 +4,7 @@ import admin_root from "./admin";
 import userRoute from "./user";
 
 import acteRoute from "./acte";
+import demandRoute from "./demands";
 
 
 const routes = Router()
@@ -26,5 +27,6 @@ routes.use('/admin',admin_root)
 
 routes.use('/user',userRoute)
 routes.use('/act',acteRoute)
+routes.use('/demand',demandRoute)
 
 export default routes

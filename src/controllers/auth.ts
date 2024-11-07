@@ -94,8 +94,9 @@ export const login_admin = async (req:Request , res:Response) =>{
     const { email_admin, password ,role } = req.body
     let msg = ""
     try {
-
+        
         const admin = await prisma.administrator.findFirst({ where: { email_admin } })
+        
         if (!admin) {
             msg = "you are not admin!please leave here!"
             res.status(404).json({msg})

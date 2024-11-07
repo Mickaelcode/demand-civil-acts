@@ -9,7 +9,7 @@ import { fileUrl } from './middlewares/file'
 
 const app = express()
 const prisma = new PrismaClient()
-export const PORT = process.env.PORT || 8000
+export const PORT = process.env.PORT || 4000
 
 app.use(cors())
 app.use(express.json())
