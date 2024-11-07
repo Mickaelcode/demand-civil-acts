@@ -1,5 +1,22 @@
-node_modules
-# Keep environment variables out of version control
-.env
+# Build outputs
+dist/
+node_modules/
+tsconfig.tsbuildinfo
 
-files
+# IDE-specific files
+.vscode/
+.idea/
+
+# Logs and temporary files
+logs/
+tmp/
+*.log
+
+# Specific to your project
+postman.tar.gz
+
+#files
+files/
+
+#env
+.env
