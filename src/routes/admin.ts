@@ -14,9 +14,9 @@ admin_root.post('/login', login_admin)
  * 
  */
 admin_root.post('/create',security_admin,createAdmin)
-admin_root.post('/update',security_admin,updateAdmin)
+admin_root.put('/update',security_admin,updateAdmin)
 admin_root.get('/lists',security_admin,readAmin)
-admin_root.post('/delete',security_admin,deleteAdmin)
+admin_root.delete('/delete',security_admin,deleteAdmin)
 
 
 
