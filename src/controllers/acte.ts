@@ -6,7 +6,13 @@ export const createAct = async (req: Request, res: Response) => {
     const files = req.files as Express.Multer.File[]
     try {
         const fileActe = files.length > 1 ? files.map(fic => fic.path).join('/') : files[0].path
-        const acte = await prisma.acte.create({
+        let acte = await prisma.acte.findUnique({where:{numAct:req.body.numAct}})
+        if(acte){
+            const msg  = "Act already exist!"
+            res.status(401).json({msg})
+            return
+        }
+         acte = await prisma.acte.create({
             data: {
                 ...req.body,
                 fileActe

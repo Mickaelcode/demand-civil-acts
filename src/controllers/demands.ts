@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "..";
+import fs from "fs"
 
 export const createDemand = async (req: Request, res: Response) => {
     const files = req.files as Express.Multer.File[]
@@ -24,6 +25,12 @@ export const createDemand = async (req: Request, res: Response) => {
         res.status(200).json({ msg, demand })
         return
     } catch (err) {
+        files.forEach(file =>{
+            fs.unlink(file.path,(err) =>{
+                console.log(err);
+                
+            })
+        })
         res.status(500).json({ err })
         return
 
