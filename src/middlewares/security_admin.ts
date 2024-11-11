@@ -24,7 +24,7 @@ export const security_admin = (req: Request, res: Response, next: NextFunction) 
 
             const role = decodeToken.role
             if (role !== 'admin') {
-                if (req.originalUrl ==='/api/user/update'){
+                if (req.originalUrl ==='/api/demand/create'|| req.originalUrl ==='/api/demand/update'){
                     next()  
                     return
                 }
