@@ -33,6 +33,11 @@ enum Status {
   ACCEPTE
 }
 
+enum Paid{
+  NO
+  YES
+}
+
 model Demand {
   id         Int    @id @default(autoincrement())
   actDemand  Act
@@ -50,7 +55,7 @@ model Demand {
   createdAt    DateTime @default(now())
 
   status Status @default(EN_ATTENTE)
-  paid Boolean @default(false)
+  paid Paid @default(NO)
 
   user  User          @relation(fields: [emailUser], references: [email])
   admin Administrator @relation(fields: [emailAdmin], references: [email_admin])

@@ -124,7 +124,7 @@ export const updateDemand = async (req:Request,res:Response) =>{
                             status:"EN_ATTENTE"
                         },
                         {
-                            paid:false
+                            paid : "NO"
                         }
                     ]
                 }
