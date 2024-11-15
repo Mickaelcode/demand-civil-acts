@@ -56,6 +56,8 @@ export const readDemand = async (req: Request, res: Response) => {
     }
 }
 
+
+
 export const deleteDemand = async (req:Request,res:Response) =>{
     try{
         let msg = ""
@@ -109,6 +111,37 @@ export const updateDemand = async (req:Request,res:Response) =>{
             }
         })
     }catch(err){
-
+        
     }
 }
+    export const notification = async (req:Request,res:Response) =>{
+        try {
+            let msg = ""
+            const demand = await prisma.demand.findMany({
+                where:{
+                    OR:[
+                        {
+                            status:"EN_ATTENTE"
+                        },
+                        {
+                            paid:false
+                        }
+                    ]
+                }
+            })
+            if (!demand || demand.length === 0) {
+                msg = "Empty!"
+                res.status(200).json({ msg })
+                return
+            }
+            let data = demand.map(a => ({ ...a, attachment: a.attachment.split('~').map(att => process.env.API_URL!+PORT+'/image/'+att.replace('files/','') )}))
+            msg = "here the notification"
+            res.status(200).json({ msg, data })
+            return
+        } catch (err) {
+            res.status(500).json({ err })
+            return
+        }
+    }
+    
+    

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { security_admin } from "../middlewares/security_admin";
 import { upload } from "../middlewares/upload";
-import { createDemand, deleteDemand, readDemand, updateDemand } from "../controllers/demands";
+import { createDemand, deleteDemand, notification, readDemand, updateDemand } from "../controllers/demands";
 
 const demandRoute = Router ()
 
@@ -13,6 +13,6 @@ demandRoute.post('/create',security_admin,upload.array('files'),createDemand)
 demandRoute.get('/lists',security_admin,readDemand)
 demandRoute.put('/update',security_admin,upload.array('files'),updateDemand)
 demandRoute.delete('/delete',security_admin,deleteDemand)
-
+demandRoute.get('/notification',notification)
 
 export default demandRoute

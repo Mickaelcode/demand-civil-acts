@@ -50,6 +50,7 @@ model Demand {
   createdAt    DateTime @default(now())
 
   status Status @default(EN_ATTENTE)
+  paid Boolean @default(false)
 
   user  User          @relation(fields: [emailUser], references: [email])
   admin Administrator @relation(fields: [emailAdmin], references: [email_admin])
