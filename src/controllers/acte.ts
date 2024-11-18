@@ -5,8 +5,15 @@ import fs from 'fs'
 export const createAct = async (req: Request, res: Response) => {
     const files = req.files as Express.Multer.File[]
     try {
-        const fileActe = files.length > 1 ? files.map(fic => fic.path).join('/') : files[0].path
-        let acte = await prisma.acte.findUnique({where:{numAct:req.body.numAct}})
+        
+        if (! files || files.length===0){
+            const msg  = "file required"
+            res.status(401).json({msg})
+            return
+        }
+        const fileActe = files[0].buffer.toString('base64')
+       console.log(fileActe)
+        let acte = await prisma.acte.findUnique({where:{numAct:req.body.numAct}})        
         if(acte){
             const msg  = "Act already exist!"
             res.status(401).json({msg})
@@ -18,15 +25,11 @@ export const createAct = async (req: Request, res: Response) => {
                 fileActe
             }
         })
+        
         const msg = "acte created successfully!"
-        res.status(200).json({ msg, acte })
+        res.status(200).json({ msg,  acte })
         return
     } catch (err) {
-        files.forEach(file => {
-            fs.unlink(file.path, (err) => {
-                console.log(err);
-            })
-        })
         const msg = "have error !"
         res.status(500).json({ msg, err })
         return
@@ -42,9 +45,8 @@ export const readAct = async (req: Request, res: Response) => {
             res.status(200).json({ msg })
             return
         }
-        let data = act.map(a => ({ ...a, fileActe: process.env.API_URL! + PORT + '/image/' + a.fileActe.replace('files/', '') }))
         msg = "here list of act"
-        res.status(200).json({ msg, data })
+        res.status(200).json({ msg, act })
         return
     } catch (err) {
         res.status(500).json({ err })
