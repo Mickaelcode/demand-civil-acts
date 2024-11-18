@@ -7,7 +7,7 @@ export const createDemand = async (req: Request, res: Response) => {
     try {
         let msg = ""
         const attachment = files.length <= 1 ? false : files.map(fic => fic.path).join('~')
-        if (!attachment) {
+        if (!attachment ) {
             msg = "file not accepted"
             res.status(401).json({ msg })
             return

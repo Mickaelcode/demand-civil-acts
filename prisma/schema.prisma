@@ -51,7 +51,7 @@ model Demand {
   firstName    String
   dateOfBirth  DateTime
   placeOfBirth String
-  attachment   String @db.VarChar(255)
+  attachment   String[]
   createdAt    DateTime @default(now())
 
   status Status @default(EN_ATTENTE)
