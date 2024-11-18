@@ -15,7 +15,7 @@ const acteRoute = Router()
 // acteRoute.post('/create',security_auth,upload.array('files'),createAct)
 acteRoute.post('/create',security_auth,multer({}).array('files'),createAct)
 acteRoute.get('/lists',security_admin,readAct)
-acteRoute.put('/update',security_admin,upload.array('files'),updateActe)
+acteRoute.put('/update',security_admin,multer({}).array('files'),updateActe)
 acteRoute.delete('/delete',security_admin,deleteActe)
 
 export default acteRoute

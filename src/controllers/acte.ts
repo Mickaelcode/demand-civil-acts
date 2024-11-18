@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma, { PORT } from "..";
+import prisma from "..";
 import fs from 'fs'
 
 export const createAct = async (req: Request, res: Response) => {
@@ -56,7 +56,7 @@ export const readAct = async (req: Request, res: Response) => {
 
 
 export const updateActe = async (req: Request, res: Response) => {
-    const files = req.files as Express.Multer.File[] | undefined;
+    const files = req.files as Express.Multer.File[] 
     try {
         const { numAct } = req.body;
         let msg = '';
@@ -67,30 +67,8 @@ export const updateActe = async (req: Request, res: Response) => {
             return 
         }
 
-        let fileActe;
-        if (!files || files.length === 0) {
-            // Si aucun fichier n'est envoyé, on garde l'ancien fichier
-            fileActe = act.fileActe;
-        } else {
-            // Si des fichiers sont envoyés, on les traite
-            fileActe = files.length > 1 ? files.map(fic => fic.path).join('/') : files[0].path;
+        const fileActe = (!files || files.length===0 )? act.fileActe : files[0].buffer.toString('base64')
 
-            // Supprimer l'ancien fichier
-            try {
-                await new Promise<void>((resolve, reject) => {
-                    fs.unlink(act!.fileActe, (err) => {
-                        if (err) reject('File not deleted');
-                        else resolve();
-                    });
-                });
-            } catch (deleteError) {
-                msg = "File couldn't be deleted!";
-                res.status(400).json({ msg: deleteError });
-                return
-            }
-        }
-
-        // Mise à jour de l'acte dans la base de données
         act = await prisma.acte.update({
             where: { numAct },
             data: {
@@ -112,9 +90,7 @@ export const updateActe = async (req: Request, res: Response) => {
 export const deleteActe = async (req: Request, res: Response) => {
 
     try{
-        const {numAct} = req.body
-        console.log(numAct);
-        
+        const {numAct} = req.body        
         let msg=  ""
         let act  = await prisma.acte.findFirst({where:{numAct}})
         
@@ -124,13 +100,6 @@ export const deleteActe = async (req: Request, res: Response) => {
             return
         }
         act = await prisma.acte.delete({where:{numAct}})
-        fs.unlink(act.fileActe,err=>{
-            if (err) {
-                msg = "file act not deleted"
-                res.status(200).json({msg})
-                return
-            }
-        })
         msg = "act deleted successfully"
         res.status(200).json({msg,act})
         return
