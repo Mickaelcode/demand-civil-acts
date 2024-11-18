@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import prisma from "..";
-import fs from 'fs'
 
 export const createAct = async (req: Request, res: Response) => {
     const files = req.files as Express.Multer.File[]
