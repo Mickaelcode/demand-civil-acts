@@ -37,8 +37,10 @@ export const readDemand = async (req: Request, res: Response) => {
             res.status(200).json({ msg })
             return
         }
-        msg =`here the lists of demands(${demand.length})`
-        res.status(200).json({ msg, demand })
+        const data :string[] = []
+        demand.forEach(dem => data.push(`id:${dem.id} = attachment: ${dem.attachment.length}`))
+        msg =`here the lists of demands(${demand.length}  )`        
+        res.status(200).json({ msg, data,demand })
         return
     } catch (err) {
         res.status(500).json({ err })
@@ -150,6 +152,7 @@ export const updateDemand = async (req: Request, res: Response) => {
         return
     }
 }
+
 export const notificationAdmin = async (req: Request, res: Response) => {
     try {
         let msg = ""
@@ -174,10 +177,7 @@ export const notificationAdmin = async (req: Request, res: Response) => {
             res.status(200).json({ msg })
             return
         }
-
-        const dataNoPaid = demands.filter(demand => demand.status==='ACCEPTE' && demand.attachment.length===3 )
-        const data = [...new Set([...demands,...dataNoPaid])]
-            // let data = demand.map(a => ({ ...a, attachment: a.attachment.split('~').map(att => process.env.API_URL!+PORT+'/image/'+att.replace('files/','') )}))
+        const data = demands.filter ( demand => (demand.status==='EN_ATTENTE' && demand.paid=="NO") || (demand.status==='ACCEPTE' && demand.attachment.length===3) )
         msg = `here the notification(${data.length})`
         res.status(200).json({ msg, data })
         return
