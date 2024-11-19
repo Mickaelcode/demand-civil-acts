@@ -11,7 +11,6 @@ export const createAct = async (req: Request, res: Response) => {
             return
         }
         const fileActe = files[0].buffer.toString('base64')
-       console.log(fileActe)
         let acte = await prisma.acte.findUnique({where:{numAct:req.body.numAct}})        
         if(acte){
             const msg  = "Act already exist!"
