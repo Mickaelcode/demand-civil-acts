@@ -187,3 +187,36 @@ export const notificationAdmin = async (req: Request, res: Response) => {
     }
 }
 
+
+export const notificationUser = async (req: Request, res: Response) => {
+    try {
+        let msg = ""
+        /**
+         * for admin is status en attente and no paid or status accepter and no paid
+         * but this is a en attente status or no paid 
+         */
+        const demands = await prisma.demand.findMany({
+            where: {
+                AND: [
+                    {
+                        status:"ACCEPTE"
+                    },
+                    {
+                        paid: "NO"
+                    }
+                ]
+            }
+        })
+        if (!demands || demands.length === 0) {
+            msg = "Empty!"
+            res.status(200).json({ msg })
+            return
+        }
+        msg = `here the notification(${demands.length})`
+        res.status(200).json({ msg, demands })
+        return
+    } catch (err) {
+        res.status(500).json({ err })
+        return
+    }
+}
