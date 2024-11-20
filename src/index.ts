@@ -11,7 +11,29 @@ import { fileUrl } from './middlewares/file'
  * all the root start with " /api/"
  * 
  *  the Admin root have all privilege for table acte,demand and admin and user(for delete) : 
- *       the demand root start with " / demand"
+ *       the demand root start with " / demand/" and there are the root: 
+ *                                  -/lists
+ *                                  -/delete
+ *                                  -/notificationAdmin 
+ *                                  
+ * 
+ * 
+ * 
+ *       the acte root start with " /act" and there are the root : 
+ *                                  -/create
+ *                                  -/lists
+ *                                  -/update
+ *                                  -/delete
+ *                              
+ * 
+ *  the other root is for the admin and the user :
+ *                                     -/demand/create
+ *                                     -/demand/update
+ *                                     -/demand/notificationUser
+ * 
+ * the user root : 
+ *      _/user/signUp
+ *      -/login
  *   
  */
 
