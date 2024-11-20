@@ -5,7 +5,15 @@ import cors from "cors"
 import { fileUrl } from './middlewares/file'
 
 
-
+/***
+ * HOW USE THIS API?
+ * here are the all of the root : 
+ * all the root start with " /api/"
+ * 
+ *  the Admin root have all privilege for table acte,demand and admin and user(for delete) : 
+ *       the demand root start with " / demand"
+ *   
+ */
 
 const app = express()
 const prisma = new PrismaClient()
