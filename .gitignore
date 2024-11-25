@@ -10,8 +10,8 @@ tmp/
 *.log
 
 # Specific to your project
-#files
-files/
+#migartion
+prisma/migartions
 
 #env
 .env
