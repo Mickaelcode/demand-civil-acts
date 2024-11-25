@@ -172,7 +172,7 @@ export const notificationUser = async (req: Request, res: Response) => {
     try {
         let msg = ""
         /**
-         * for user is the demand "En_attente" and "no" paid - "Accapted" and "no" paid - "refused"
+         * for user is the demand "En_attente" and "no" paid - "Accapted" and "no" paid - "refused" and "no" paid
          */
         const demands = await prisma.demand.findMany({
             where: {
