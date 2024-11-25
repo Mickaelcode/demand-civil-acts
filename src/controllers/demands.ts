@@ -39,7 +39,9 @@ export const readDemand = async (req: Request, res: Response) => {
         }
         const data :string[] = []
         demand.forEach(dem => data.push(`id:${dem.id} = attachment: ${dem.attachment.length}`))
-        msg =`here the lists of demands(${demand.length}  )`        
+        msg =`here the lists of demands(${demand.length}  )`   
+        console.log(demand);
+             
         res.status(200).json({ msg, data,demand })
         return
     } catch (err) {
@@ -74,19 +76,6 @@ export const updateDemand = async (req: Request, res: Response) => {
     const {
 
         idDemande,
-        actDemand,
-        emailAdmin,
-        emailUser,
-        numActe,
-
-        province,
-        commune,
-        name,
-        firstName,
-        dateOfBirth,
-        placeOfBirth,
-
-
         status,
         paid,
 
@@ -104,45 +93,36 @@ export const updateDemand = async (req: Request, res: Response) => {
         }
 
         // /**
-        //  * if the update add file ,add this with the two local 
-        //  * 
+        //  * if the  user paid he must add one file
         //  */
-        let attachment: string[]
-        switch (files.length) {
-            case 1: attachment = [...demand.attachment, files[0].buffer.toString('base64')]
-                break
-            case 2: attachment = files.map(fic => fic.buffer.toString('base64'))
-                break
-            default: attachment = [...demand.attachment]
-                break
-        }
+        if(paid){
 
-        if (!attachment) {
-            msg = "file not accepted"
-            res.status(401).json({ msg })
-            return
-        }
-        const createdAt = demand.createdAt
-
-        demand = await prisma.demand.update({
-            where: { id },
-            data: {
-                actDemand,
-                emailAdmin,
-                emailUser,
-                numActe,
-                province,
-                commune,
-                name,
-                firstName,
-                dateOfBirth,
-                placeOfBirth,
-                attachment,
-                createdAt,
-                status,
-                paid
+            let attachment: string[] = [...demand.attachment,files[0].buffer.toString('base64')]
+    
+            if (!attachment) {
+                msg = "file not accepted"
+                res.status(401).json({ msg })
+                return
             }
-        })
+
+            demand = await prisma.demand.update({
+                where:{id},
+                data:{
+                    attachment,
+                    status,
+                    paid
+                }
+            })
+        } else{
+            demand = await prisma.demand.update({
+                where:{id},
+                data:{
+                    status
+                }
+            })
+        }
+
+       
 
         msg = "update succesfully!"
         res.status(201).json({ msg, demand })
@@ -192,14 +172,13 @@ export const notificationUser = async (req: Request, res: Response) => {
     try {
         let msg = ""
         /**
-         * for admin is status en attente and no paid or status accepter and no paid
-         * but this is a en attente status or no paid 
+         * for user is the demand "En_attente" and "no" paid - "Accapted" and "no" paid - "refused"
          */
         const demands = await prisma.demand.findMany({
             where: {
-                AND: [
+                OR: [
                     {
-                        status:"ACCEPTE"
+                        status:"EN_ATTENTE"
                     },
                     {
                         paid: "NO"
