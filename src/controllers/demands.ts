@@ -108,6 +108,7 @@ export const updateDemand = async (req: Request, res: Response) => {
         let subject = ""
         const userSend = demand.emailUser
         let html = ""
+        let attachments : [{}] = [{}]
 
         emailTransport.verify((err, suc) => {
             if (err) console.log(false);
@@ -141,10 +142,25 @@ export const updateDemand = async (req: Request, res: Response) => {
          */
         else if (paid) {
             subject = "*****CONGRATULATION****"
-            html = `<h1 style="font-family:cursive;"> Your demand are succesfully accepted </h1>
+            html = `<h1 style="font-family:cursive;"> Your demand are succesfully accepted here are your act demand </h1>
              <br><p  style="font-size:1.2em;">Check your <b>notification App</b> to see this </p> 
         
             `
+            const act = await prisma.acte.findUnique({where:{numAct:demand.numActe}})
+            if(!act){
+                msg = "act not match"
+                res.status(401).json({msg})
+                return
+            }
+            const content = act.fileActe
+            attachments =  [
+               
+                {   
+                    filename: `${demand.emailUser}.jpeg`,
+                    content,
+                    encoding: 'base64'
+                }
+             ]
 
             demand = await prisma.demand.update({
                 where: { id },
@@ -189,7 +205,8 @@ export const updateDemand = async (req: Request, res: Response) => {
             from: process.env.ADMIN_DEFAULT_EMAIL,
             to: userSend,
             subject,
-            html
+            html,
+            attachments
         }
         console.log('Preparing to send email:', mailOptions);
 
