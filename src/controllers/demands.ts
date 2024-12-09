@@ -126,7 +126,7 @@ export const updateDemand = async (req: Request, res: Response) => {
         res.status(401).json({ msg });
         return;
       }
-      if (demand.attachment.length >= 3) {
+      if (demand.attachment.length > 3) {
         msg = "error ! it 's paid yet";
         res.status(401).json({ msg });
         return;
