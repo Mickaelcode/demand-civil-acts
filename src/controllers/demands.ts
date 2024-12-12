@@ -116,6 +116,13 @@ export const updateDemand = async (req: Request, res: Response) => {
     //  * if the  user paid , he must add one file
     //  */
     if (files) {
+      console.log(demand.attachment.length);
+      if (demand.attachment.length >= 3) {
+        console.log("I am here ");
+        msg = "error ! it 's paid yet";
+        res.status(401).json({ msg });
+        return;
+      }
       let attachment: string[] = [
         ...demand.attachment,
         files[0].buffer.toString("base64"),
@@ -123,11 +130,6 @@ export const updateDemand = async (req: Request, res: Response) => {
 
       if (!attachment) {
         msg = "file not accepted";
-        res.status(401).json({ msg });
-        return;
-      }
-      if (demand.attachment.length > 3) {
-        msg = "error ! it 's paid yet";
         res.status(401).json({ msg });
         return;
       }
