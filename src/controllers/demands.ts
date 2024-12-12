@@ -45,7 +45,6 @@ export const readDemand = async (req: Request, res: Response) => {
       data.push(`id:${dem.id} = attachment: ${dem.attachment.length}`)
     );
     msg = `here the lists of demands(${demand.length}  )`;
-    console.log(demand);
 
     res.status(200).json({ msg, data, demand });
     return;
@@ -282,7 +281,7 @@ export const notificationUser = async (req: Request, res: Response) => {
     });
     if (!demands || demands.length === 0) {
       msg = "Empty!";
-      res.status(200).json({ msg });
+      res.status(201).json({ msg });
       return;
     }
     msg = `here the notification(${demands.length})`;
