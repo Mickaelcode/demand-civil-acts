@@ -262,23 +262,32 @@ export const notificationAdmin = async (req: Request, res: Response) => {
 };
 
 export const notificationUser = async (req: Request, res: Response) => {
+  const emailInput = req.query.emailUser
   try {
     let msg = "";
+    const emailUser = Array.isArray(emailInput)? emailInput[0] : emailInput
     /**
      * for user is the demand "En_attente" and "no" paid - "Accapted" and "no" paid - "refused" and "no" paid
      */
+    if(!emailUser){
+      msg = "user not authenticate"
+      res.status(401).json({msg})
+      return
+    }
     const demands = await prisma.demand.findMany({
       where: {
-        OR: [
+        emailUser:emailUser,
+        AND: [
           {
-            status: "EN_ATTENTE",
-          },
-          {
-            paid: "NO",
+            OR: [
+              { status: 'EN_ATTENTE' },
+              { paid: 'NO' },
+            ],
           },
         ],
       },
     });
+    
     if (!demands || demands.length === 0) {
       msg = "Empty!";
       res.status(201).json({ msg });
